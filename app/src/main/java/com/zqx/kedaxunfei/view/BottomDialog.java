@@ -14,12 +14,14 @@ import com.zqx.kedaxunfei.R;
 public class BottomDialog extends Dialog {
 
     public BottomDialog(Context context) {
-        super(context,R.style.dialog_bottom_style);
+        super(context, R.style.dialog_bottom_style);
         Window window = getWindow();
-        WindowManager.LayoutParams attributes = window.getAttributes();
-        attributes.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        attributes.gravity = Gravity.BOTTOM;
-        window.setAttributes(attributes);
+        if (window != null) {
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            attributes.gravity = Gravity.BOTTOM;
+            window.setAttributes(attributes);
+        }
     }
 
 

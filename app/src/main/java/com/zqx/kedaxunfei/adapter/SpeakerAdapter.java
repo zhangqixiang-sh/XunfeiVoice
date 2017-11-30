@@ -6,23 +6,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zqx.kedaxunfei.R;
-import com.zqx.kedaxunfei.bean.SpeakerBean;
+import com.zqx.kedaxunfei.bean.Speaker;
 
 import java.util.List;
 
 /**
  * Created by ZhangQixiang on 2017/1/6.
  */
-public class SpeakerAdapter extends MyBaseAdapter<SpeakerBean> {
+public class SpeakerAdapter extends MyBaseAdapter<Speaker> {
 
-    public SpeakerAdapter(List<SpeakerBean> datas) {
+    public SpeakerAdapter(List<Speaker> datas) {
         super(datas);
     }
 
     @Override
     protected void setData(int position, View convertView, ViewGroup parent, Object viewHolder) {
         ViewHolder vh = (ViewHolder) viewHolder;
-        SpeakerBean item = getItem(position);
+        Speaker item = getItem(position);
         vh.iv.setImageResource(item.iconId);
         vh.tv.setText(item.desc);
     }

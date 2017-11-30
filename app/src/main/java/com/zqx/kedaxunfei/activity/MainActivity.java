@@ -15,12 +15,11 @@ import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.zqx.kedaxunfei.R;
 import com.zqx.kedaxunfei.adapter.SpeakerAdapter;
-import com.zqx.kedaxunfei.bean.SpeakerBean;
+import com.zqx.kedaxunfei.bean.Speaker;
 import com.zqx.kedaxunfei.constants.Keys;
 import com.zqx.kedaxunfei.utils.SpUtil;
 import com.zqx.kedaxunfei.view.BottomDialog;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -29,20 +28,20 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.et)
-    EditText  mEt;
+    EditText mEt;
     @BindView(R.id.iv_curspk_icon)
     ImageView mIvCurspkIcon;
     @BindView(R.id.tv_curspk_desc)
-    TextView  mTvCurspkDesc;
+    TextView mTvCurspkDesc;
     @BindView(R.id.seekBar)
-    SeekBar   mSeekBar;
+    SeekBar mSeekBar;
 
-    private Dialog            mDialog;
-    private SpeakerAdapter    mSpeakerAdapter;
+    private Dialog mDialog;
+    private SpeakerAdapter mSpeakerAdapter;
     private SpeechSynthesizer mTts;
-    private int               curSpkPos;
-    private List<SpeakerBean> mSpeakers = new ArrayList<>();
-    private SpeakerBean mLastSpk;
+    private int curSpkPos;
+    private List<Speaker> mSpeakers ;
+    private Speaker mLastSpk;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initSpeechParams();//初始化发音系统参数
-        initSpeakers();//初始化发音人bean的集合
+        mSpeakers = Speaker.getAllSpeakers();//得到发音人模型的集合
         initLast();//初始化上一次退出时的EditText内容和上次选择的发音人数据
         initDialogLv();//初始化发音人选择对话框
 
@@ -67,25 +66,6 @@ public class MainActivity extends AppCompatActivity {
         setVoice(mLastSpk.voice);
     }
 
-    private void initSpeakers() {
-        int[] iconIds = {
-                R.mipmap.xiaoyan, R.mipmap.laosun, R.mipmap.tanglaoya, R.mipmap.xiaoxin,
-                R.mipmap.xiaowanzi, R.mipmap.xiaomei, R.mipmap.dengziqi, R.mipmap.xiaoqian,
-                R.mipmap.xiaorong, R.mipmap.xiaokun, R.mipmap.xiaoqiang, R.mipmap.henry
-        };
-        String[] descs = {
-                "小燕 青年女声", "老孙 中年男声", "唐老鸭 卡通人物", "小新 卡通人物", "小丸子 卡通人物",
-                "粤语 小梅 青年女声", "台普 小玲 青年女声", "东北 小倩 青年女声", "四川 小蓉 青年女声",
-                "河南 小坤 青年男声", "湖南 小强 青年男声", "美式英语 亨利 青年男声"
-        };
-        String[] params = {
-                "xiaoyan", "vils", "aisduck", "xiaoxin", "xiaowanzi", "xiaomei", "aisxlin", "xiaoqian",
-                "aisxrong", "xiaokun", "aisxqiang", "henry"
-        };
-        for (int i = 0; i < iconIds.length; i++) {
-            mSpeakers.add(new SpeakerBean(iconIds[i], descs[i], params[i]));
-        }
-    }
 
     private void initSpeechParams() {
         mTts = SpeechSynthesizer.createSynthesizer(this, null);
@@ -96,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setSpeed(int num) {
-        mTts.setParameter(SpeechConstant.SPEED, ""+num);//设置语速
+        mTts.setParameter(SpeechConstant.SPEED, "" + num);//设置语速
     }
 
     private void initDialogLv() {
@@ -107,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         lvSpeaker.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SpeakerBean item = mSpeakerAdapter.getItem(position);
+                Speaker item = mSpeakerAdapter.getItem(position);
                 setVoice(item.voice);
                 mTvCurspkDesc.setText(item.desc);
                 mIvCurspkIcon.setImageResource(item.iconId);
